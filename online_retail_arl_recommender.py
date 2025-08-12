@@ -146,10 +146,10 @@ germany_inv_pro_df = create_invoice_product_df(df_germany, id=True)
 
 # Adım 2: Kuralları oluşturacak create_rules fonksiyonunu tanımlayınız ve alman müşteriler için kurallarını bulunuz.
 def create_rules(dataframe, id=False, country="Germany"):
-    dataframe = dataframe[dataframe['Country'] == country] #bu ülkeye göre veriyi indirge der
-    dataframe = create_invoice_product_df(dataframe, id=False) #id false yani description'lara göre oluştur
-    frequent_itemsets = apriori(dataframe, min_support=0.01, use_colnames=True) #apriori fonk metodunu çağır ve min support=0.001'e göre olası ürünlerin çiftlerinin frekanslarını kullanarak olasılıklarını hesaplar.
-    rules = association_rules(frequent_itemsets, metric="support", min_threshold=0.01) #bu hesaplamaları kullanarak association_rules tablomu getir rules adında.
+    dataframe = dataframe[dataframe['Country'] == country] 
+    dataframe = create_invoice_product_df(dataframe, id=False)
+    frequent_itemsets = apriori(dataframe, min_support=0.01, use_colnames=True) 
+    rules = association_rules(frequent_itemsets, metric="support", min_threshold=0.01) 
     return rules #ve bunu return et
 
 rules = create_rules(df, id=True, country="Germany")
@@ -174,6 +174,7 @@ check_id(df_germany, 22747)  # Ürün: ["POPPY'S PLAYHOUSE BATHROOM"]
 
 
 # Adım 2: arl_recommender fonksiyonunu kullanarak 3 kullanıcı için ürün önerisinde bulununuz.
+
 product_name = 'PACK OF 6 SKULL PAPER CUPS'
 check_id(df, product_name)
 
@@ -194,7 +195,6 @@ for i, antecedents_set in enumerate(sorted_rules["antecedents"]):
                     recommendation_list.append(item)
 
 print(recommendation_list)
-
 
 
 def arl_recommender(rules_df, product_name, rec_count=1):
@@ -283,4 +283,5 @@ df = retail_data_prep(df)
 rules = create_rules(df)
 
 rules[(rules["support"]>0.05) & (rules["confidence"]>0.1) & (rules["lift"]>5)]. \
+
 sort_values("confidence", ascending=False)
